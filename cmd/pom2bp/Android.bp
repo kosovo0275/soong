@@ -1,0 +1,9 @@
+blueprint_go_binary {
+    name: "pom2bp",
+    deps: [
+        "blueprint-proptools",
+				"soong-android",
+        "bpfix-lib",
+    ],
+    srcs: ["pom2bp.go"],
+}

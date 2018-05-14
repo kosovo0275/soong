@@ -1,0 +1,11 @@
+bootstrap_go_package {
+    name: "android-archive-zip",
+    pkgPath: "android/soong/third_party/zip",
+    srcs: [
+        "android.go",
+        "reader.go",
+        "register.go",
+        "struct.go",
+        "writer.go",
+    ],
+}

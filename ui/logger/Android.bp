@@ -1,0 +1,5 @@
+bootstrap_go_package {
+    name: "soong-ui-logger",
+    pkgPath: "android/soong/ui/logger",
+    srcs: ["logger.go"],
+}

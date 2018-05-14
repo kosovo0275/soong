@@ -1,0 +1,10 @@
+subdirs = ["cmd"]
+
+bootstrap_go_package {
+    name: "soong-finder",
+    pkgPath: "android/soong/finder",
+    srcs: ["finder.go"],
+    deps: ["soong-finder-fs"],
+}
+
+

@@ -1,0 +1,9 @@
+bootstrap_go_package {
+    name: "soong-finder-fs",
+    pkgPath: "android/soong/finder/fs",
+    srcs: [
+        "fs.go",
+        "readdir.go",
+    ],
+}
+

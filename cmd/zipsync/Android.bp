@@ -1,0 +1,9 @@
+blueprint_go_binary {
+    name: "zipsync",
+    deps: [
+        "android-archive-zip",
+        "blueprint-pathtools",
+    ],
+    srcs: ["zipsync.go"],
+}
+

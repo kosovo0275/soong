@@ -1,0 +1,7 @@
+bootstrap_go_package {
+    name: "soong-jar",
+    pkgPath: "android/soong/jar",
+    srcs: ["jar.go"],
+    deps: ["android-archive-zip"],
+}
+

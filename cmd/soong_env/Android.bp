@@ -1,0 +1,7 @@
+bootstrap_go_binary {
+    name: "soong_env",
+    deps: ["soong-env"],
+    srcs: ["soong_env.go"],
+    default: true,
+}
+

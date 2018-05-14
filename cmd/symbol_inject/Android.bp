@@ -1,0 +1,9 @@
+blueprint_go_binary {
+    name: "symbol_inject",
+    srcs: [
+        "symbol_inject.go",
+        "elf.go",
+        "macho.go",
+        "pe.go",
+    ],
+}

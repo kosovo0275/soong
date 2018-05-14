@@ -1,0 +1,14 @@
+blueprint_go_binary {
+    name: "bpfix",
+    srcs: ["cmd/bpfix.go"],
+    deps: ["bpfix-lib"],
+}
+
+bootstrap_go_package {
+    name: "bpfix-lib",
+    pkgPath: "android/soong/bpfix/bpfix",
+    srcs: ["bpfix/bpfix.go"],
+    deps: ["blueprint-parser"],
+}
+
+

@@ -1,0 +1,16 @@
+subdirs = ["cmd"]
+
+bootstrap_go_package {
+    name: "soong-zip",
+    pkgPath: "android/soong/zip",
+    deps: [
+        "android-archive-zip",
+        "blueprint-pathtools",
+        "soong-jar",
+    ],
+    srcs: [
+        "zip.go",
+        "rate_limit.go",
+    ],
+}
+

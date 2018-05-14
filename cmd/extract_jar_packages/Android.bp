@@ -1,0 +1,9 @@
+blueprint_go_binary {
+    name: "extract_jar_packages",
+    deps: [
+        "android-archive-zip",
+        "blueprint-pathtools",
+    ],
+    srcs: ["extract_jar_packages.go"],
+}
+

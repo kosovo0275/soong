@@ -1,0 +1,5 @@
+blueprint_go_binary {
+    name: "soong_zip",
+    deps: ["soong-zip"],
+    srcs: ["main.go"],
+}

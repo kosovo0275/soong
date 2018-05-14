@@ -1,0 +1,314 @@
+subdirs = [
+    "androidmk",
+    "bpfix",
+    "cmd/*",
+    "fs",
+    "finder",
+    "jar",
+    "zip",
+    "third_party/zip",
+    "ui/*",
+]
+
+bootstrap_go_package {
+    name: "soong-env",
+    pkgPath: "android/soong/env",
+    srcs: ["env/env.go"],
+}
+
+bootstrap_go_package {
+    name: "soong",
+    pkgPath: "android/soong",
+    deps: ["blueprint"],
+    srcs: ["doc.go"],
+}
+
+bootstrap_go_package {
+    name: "soong-android",
+    pkgPath: "android/soong/android",
+    deps: [
+        "blueprint",
+        "blueprint-bootstrap",
+        "soong",
+        "soong-env",
+    ],
+    srcs: [
+        "android/androidmk.go",
+        "android/api_levels.go",
+        "android/arch.go",
+        "android/config.go",
+        "android/defaults.go",
+        "android/defs.go",
+        "android/env.go",
+        "android/expand.go",
+        "android/filegroup.go",
+        "android/hooks.go",
+        "android/makevars.go",
+        "android/module.go",
+        "android/mutator.go",
+        "android/namespace.go",
+        "android/neverallow.go",
+        "android/onceper.go",
+        "android/package_ctx.go",
+        "android/paths.go",
+        "android/prebuilt.go",
+        "android/prebuilt_etc.go",
+        "android/proto.go",
+        "android/register.go",
+        "android/singleton.go",
+        "android/testing.go",
+        "android/util.go",
+        "android/variable.go",
+        "android/writedocs.go",
+    ],
+}
+
+bootstrap_go_package {
+    name: "soong-cc-config",
+    pkgPath: "android/soong/cc/config",
+    deps: ["soong-android"],
+    srcs: [
+        "cc/config/clang.go",
+        "cc/config/global.go",
+        "cc/config/tidy.go",
+        "cc/config/toolchain.go",
+        "cc/config/arm_device.go",
+        "cc/config/arm64_device.go",
+        "cc/config/mips_device.go",
+        "cc/config/mips64_device.go",
+        "cc/config/x86_device.go",
+        "cc/config/x86_64_device.go",
+        "cc/config/x86_darwin_host.go",
+        "cc/config/x86_linux_host.go",
+        "cc/config/x86_linux_bionic_host.go",
+        "cc/config/x86_windows_host.go",
+    ],
+}
+
+bootstrap_go_package {
+    name: "soong-cc",
+    pkgPath: "android/soong/cc",
+    deps: [
+        "blueprint",
+        "blueprint-pathtools",
+        "soong",
+        "soong-android",
+        "soong-cc-config",
+        "soong-genrule",
+    ],
+    srcs: [
+        "cc/androidmk.go",
+        "cc/binary.go",
+        "cc/builder.go",
+        "cc/cc.go",
+        "cc/check.go",
+        "cc/cmakelists.go",
+        "cc/compdb.go",
+        "cc/compiler.go",
+        "cc/coverage.go",
+        "cc/gen.go",
+        "cc/genrule.go",
+        "cc/installer.go",
+        "cc/kernel_headers.go",
+        "cc/library.go",
+        "cc/linker.go",
+        "cc/llndk_library.go",
+        "cc/lto.go",
+        "cc/makevars.go",
+        "cc/ndk_headers.go",
+        "cc/ndk_library.go",
+        "cc/ndk_prebuilt.go",
+        "cc/ndk_sysroot.go",
+        "cc/object.go",
+        "cc/pgo.go",
+        "cc/prebuilt.go",
+        "cc/proto.go",
+        "cc/relocation_packer.go",
+        "cc/rs.go",
+        "cc/sabi.go",
+        "cc/sanitize.go",
+        "cc/stl.go",
+        "cc/strip.go",
+        "cc/test.go",
+        "cc/tidy.go",
+        "cc/toolchain_library.go",
+        "cc/util.go",
+        "cc/vendor_public_library.go",
+        "cc/vndk.go",
+        "cc/vndk_prebuilt.go",
+    ],
+    pluginFor: ["soong_build"],
+}
+
+bootstrap_go_package {
+    name: "soong-genrule",
+    pkgPath: "android/soong/genrule",
+    deps: [
+        "blueprint",
+        "blueprint-pathtools",
+        "soong",
+        "soong-android",
+        "soong-shared",
+    ],
+    srcs: ["genrule/genrule.go"],
+    pluginFor: ["soong_build"],
+}
+
+bootstrap_go_package {
+    name: "soong-phony",
+    pkgPath: "android/soong/phony",
+    deps: [
+        "blueprint",
+        "soong-android",
+    ],
+    srcs: ["phony/phony.go"],
+    pluginFor: ["soong_build"],
+}
+
+bootstrap_go_package {
+    name: "soong-java",
+    pkgPath: "android/soong/java",
+    deps: [
+        "blueprint",
+        "blueprint-pathtools",
+        "soong",
+        "soong-android",
+        "soong-genrule",
+        "soong-java-config",
+    ],
+    srcs: [
+        "java/aapt2.go",
+        "java/aar.go",
+        "java/android_resources.go",
+        "java/androidmk.go",
+        "java/app_builder.go",
+        "java/app.go",
+        "java/builder.go",
+        "java/dex.go",
+        "java/droiddoc.go",
+        "java/gen.go",
+        "java/genrule.go",
+        "java/jacoco.go",
+        "java/java.go",
+        "java/java_resources.go",
+        "java/proto.go",
+        "java/sdk_library.go",
+        "java/system_modules.go",
+    ],
+    pluginFor: ["soong_build"],
+}
+
+bootstrap_go_package {
+    name: "soong-java-config",
+    pkgPath: "android/soong/java/config",
+    deps: [
+        "blueprint-proptools",
+        "soong-android",
+    ],
+    srcs: [
+        "java/config/config.go",
+        "java/config/error_prone.go",
+        "java/config/kotlin.go",
+        "java/config/makevars.go",
+    ],
+}
+
+bootstrap_go_package {
+    name: "soong-python",
+    pkgPath: "android/soong/python",
+    deps: [
+        "blueprint",
+        "soong-android",
+    ],
+    srcs: [
+        "python/androidmk.go",
+        "python/binary.go",
+        "python/builder.go",
+        "python/defaults.go",
+        "python/installer.go",
+        "python/library.go",
+        "python/proto.go",
+        "python/python.go",
+        "python/test.go",
+    ],
+    pluginFor: ["soong_build"],
+}
+
+bootstrap_go_package {
+    name: "soong-shared",
+    pkgPath: "android/soong/shared",
+    srcs: ["shared/paths.go"],
+}
+
+bootstrap_go_package {
+    name: "soong-xml",
+    pkgPath: "android/soong/xml",
+    deps: [
+        "blueprint",
+        "blueprint-pathtools",
+        "soong",
+        "soong-android",
+    ],
+    srcs: ["xml/xml.go"],
+    pluginFor: ["soong_build"],
+}
+
+cc_defaults {
+    name: "linux_bionic_supported",
+    host_supported: true,
+    device_supported: true,
+    target: {
+        host: {
+            enabled: false,
+        },
+        android: {
+            enabled: true,
+        },
+    },
+}
+
+toolchain_library {
+    name: "libatomic",
+    host_supported: true,
+    arch: {
+        arm: {
+            instruction_set: "arm",
+        },
+    },
+}
+
+toolchain_library {
+    name: "libgcc",
+    host_supported: true,
+    arch: {
+        arm: {
+            instruction_set: "arm",
+        },
+    },
+}
+
+toolchain_library {
+    name: "libwinpthread",
+    host_supported: true,
+    enabled: false,
+    target: {
+        windows: {
+            enabled: true,
+        },
+    },
+}
+
+toolchain_library {
+    name: "libgcov",
+    host_supported: true,
+    arch: {
+        arm: {
+            instruction_set: "arm",
+        },
+    },
+}
+
+kernel_headers {
+    name: "device_kernel_headers",
+    vendor: true,
+}

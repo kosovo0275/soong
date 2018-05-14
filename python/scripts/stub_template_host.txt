@@ -1,0 +1,77 @@
+#!/data/data/com.termux/files/usr/bin/python2.7
+
+import os
+import re
+import tempfile
+import shutil
+import sys
+import subprocess
+import zipfile
+
+PYTHON_BINARY = '/data/data/com.termux/files/usr/bin/python2.7'
+MAIN_FILE = '%main%'
+PYTHON_PATH = 'PYTHONPATH'
+ZIP_RUNFILES_DIRECTORY_NAME = 'runfiles'
+
+def SearchPathEnv(name):
+  search_path = os.getenv('PATH', os.defpath).split(os.pathsep)
+  for directory in search_path:
+    if directory == '': continue
+    path = os.path.join(directory, name)
+    if os.path.islink(path):
+      path = os.path.realpath(path)
+    if os.path.isfile(path) and os.access(path, os.X_OK):
+      return path
+  return None
+
+def FindPythonBinary():
+  if PYTHON_BINARY.startswith('/'):
+    return PYTHON_BINARY
+  else:
+    return SearchPathEnv(PYTHON_BINARY)
+
+def ExtractRunfiles():
+  temp_dir = tempfile.mkdtemp("", "Soong.python_")
+  zf = zipfile.ZipFile(os.path.dirname(__file__))
+  zf.extractall(temp_dir)
+  return os.path.join(temp_dir, ZIP_RUNFILES_DIRECTORY_NAME)
+
+def Main():
+  args = sys.argv[1:]
+
+  new_env = {}
+
+  try:
+    runfiles_path = ExtractRunfiles()
+    python_path_entries = [runfiles_path]
+    top_entries = [os.path.join(runfiles_path, i) for i in os.listdir(runfiles_path)]
+    top_pkg_dirs = [i for i in top_entries if os.path.isdir(i)]
+    python_path_entries += top_pkg_dirs
+    old_python_path = os.environ.get(PYTHON_PATH)
+    separator = ':'
+    new_python_path = separator.join(python_path_entries)
+
+    if old_python_path:
+      new_python_path += separator + old_python_path
+    new_env[PYTHON_PATH] = new_python_path
+
+    main_filepath = os.path.join(runfiles_path, MAIN_FILE)
+    assert os.path.exists(main_filepath), 'Cannot exec() %r: file not found.' % main_filepath
+    assert os.access(main_filepath, os.R_OK), 'Cannot exec() %r: file not readable.' % main_filepath
+
+    python_program = FindPythonBinary()
+    if python_program is None:
+      raise AssertionError('Could not find python binary: ' + PYTHON_BINARY)
+    args = [python_program, main_filepath] + args
+
+    os.environ.update(new_env)
+    sys.stdout.flush()
+    retCode = subprocess.call(args)
+    exit(retCode)
+  except:
+    raise
+  finally:
+    shutil.rmtree(os.path.dirname(runfiles_path), True)
+
+if __name__ == '__main__':
+  Main()
